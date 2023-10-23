@@ -1,7 +1,7 @@
 const Task = require('../models/Task');
 
 // const addTask = (req, res) => {
-//     res.send("in addTask");
+//   res.send("in addTask");
 // }
 const addTask = (req, res) => {
   res.render('pages/addTask');
@@ -9,7 +9,7 @@ const addTask = (req, res) => {
 // This just renders the addTask.ejs template, with a message if any.
 
 // const createTask = async (req, res) => {
-//      res.send("in createTask");
+//   res.send("in createTask");
 // }
 const createTask = async (req, res) => {
   try {
@@ -34,11 +34,11 @@ const createTask = async (req, res) => {
 // Here you are using the values posted in req.body to create a task. That may succeed or fail, depending on the validation of values. req.body.complete may have the string value “true” for complete, which must be changed to the boolean value of true for completed.
 
 const deleteTask = async (req, res) => {
-    res.send("in deleteTask");
+  res.send("in deleteTask");
 }
 
 // const editTask = async (req, res) => {
-//     res.send("in editTask");
+//   res.send("in editTask");
 // }
 const editTask = async (req, res) => {
   try {
@@ -48,13 +48,13 @@ const editTask = async (req, res) => {
     res.render('pages/editTask', { task })
   // findById call may fail in which case the error is reported to the user
   } catch (err) {
-      req.session.pendingMessage = 'Something went wrong.'
-      res.redirect('/tasks')
+    req.session.pendingMessage = 'Something went wrong.'
+    res.redirect('/tasks')
   }
 }
 
 // const updateTask = async (req, res) => {
-//    res.send("in updateTask");
+//   res.send("in updateTask");
 // }
 const updateTask = async (req, res) => {
   let task = false;
@@ -90,7 +90,7 @@ const updateTask = async (req, res) => {
 };
 
 // const getTasks = async (req, res) => {
-//     res.send("in getTasks");
+//   res.send("in getTasks");
 // }
 const getTasks = async (req, res) => {
   try {
@@ -104,10 +104,10 @@ const getTasks = async (req, res) => {
 // This method retrieves the list of tasks. It may be an empty array, or a list of tasks, which is passed on the render call to the tasks.ejs template on the render call.
 
 module.exports = {
-    addTask,
-    createTask,
-    deleteTask,
-    updateTask,
-    editTask,
-    getTasks
+  addTask,
+  createTask,
+  deleteTask,
+  updateTask,
+  editTask,
+  getTasks
 };
