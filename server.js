@@ -24,6 +24,11 @@
 
 // configure the application to use EJS and set up the routes for the Index page and the About page
 
+// set up a session
+require('dotenv').config();
+const connectDB = require('./db/connect');
+const session = require('express-session');
+
 // This code defines the application and listens on port 8080:
 var express = require('express');
 var app = express();
@@ -56,5 +61,21 @@ app.get('/about', function(req, res) {
   res.render('pages/about');
 });
 
-app.listen(8080);
-console.log('Server is listening on port 8080');
+// fix the startup sequence to automatically connect to the database
+
+// app.listen(8080);
+// console.log('Server is listening on port 8080');
+
+const port = 8080;
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI);
+    app.listen(port, () =>
+      console.log(`Server is listening on port ${port}...`)
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+start();
