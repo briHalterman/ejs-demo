@@ -33,8 +33,21 @@ const createTask = async (req, res) => {
 };
 // Here you are using the values posted in req.body to create a task. That may succeed or fail, depending on the validation of values. req.body.complete may have the string value “true” for complete, which must be changed to the boolean value of true for completed.
 
+// const deleteTask = async (req, res) => {
+//   res.send("in deleteTask");
+// }
 const deleteTask = async (req, res) => {
-  res.send("in deleteTask");
+  try {
+    task = await Task.findById(req.params.id);
+    // issue a findByIdAndDelete
+    await Task.findByIdAndDelete(req.params.id);
+    // display a message on the success of the operation
+    req.session.pendingMessage = "The task was deleted.";
+  } catch (err) {
+    // display a message on the failure of the operation
+    req.session.pendingMessage = 'Something went wrong.';
+  }
+  res.redirect('/tasks');
 }
 
 // const editTask = async (req, res) => {
@@ -43,13 +56,13 @@ const deleteTask = async (req, res) => {
 const editTask = async (req, res) => {
   try {
     // To edit a task, you have to load it first
-    const task = await Task.findById(req.params.id)
+    const task = await Task.findById(req.params.id);
     // the task variable is passed to the editTask.ejs on the render
-    res.render('pages/editTask', { task })
+    res.render('pages/editTask', { task });
   // findById call may fail in which case the error is reported to the user
   } catch (err) {
-    req.session.pendingMessage = 'Something went wrong.'
-    res.redirect('/tasks')
+    req.session.pendingMessage = 'Something went wrong.';
+    res.redirect('/tasks');
   }
 }
 
