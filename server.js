@@ -24,7 +24,11 @@
 
 // configure the application to use EJS and set up the routes for the Index page and the About page
 
-// set up a session
+// change the server.js to load the routes and middleware
+const taskRouter = require('./routes/tasks');
+const setMessage = require('./middleware/message');
+
+// load in session setup
 require('dotenv').config();
 const connectDB = require('./db/connect');
 const session = require('express-session');
@@ -35,6 +39,13 @@ var app = express();
 
 // This code sets EJS as the view engine for the Express application:
 app.set('view engine', 'ejs');
+
+// set up the session
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
+//  invoke express middleware to parse the data that is returned when the browser posts form results
+app.use(express.urlencoded({extended: false}));
+// invoke the message middleware and the routes you created
+app.use('/tasks', setMessage, taskRouter);
 
 // use res.render to load up an ejs view file
 // the code sends a view to the user by using res.render()
