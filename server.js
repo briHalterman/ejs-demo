@@ -24,12 +24,28 @@
 
 // configure the application to use EJS and set up the routes for the Index page and the About page
 
+// change the server.js to load the routes and middleware
+const taskRouter = require('./routes/tasks');
+const setMessage = require('./middleware/message');
+
+// load in session setup
+require('dotenv').config();
+const connectDB = require('./db/connect');
+const session = require('express-session');
+
 // This code defines the application and listens on port 8080:
 var express = require('express');
 var app = express();
 
 // This code sets EJS as the view engine for the Express application:
 app.set('view engine', 'ejs');
+
+// set up the session
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: true }));
+//  invoke express middleware to parse the data that is returned when the browser posts form results
+app.use(express.urlencoded({extended: false}));
+// invoke the message middleware and the routes you created
+app.use('/tasks', setMessage, taskRouter);
 
 // use res.render to load up an ejs view file
 // the code sends a view to the user by using res.render()
@@ -56,5 +72,21 @@ app.get('/about', function(req, res) {
   res.render('pages/about');
 });
 
-app.listen(8080);
-console.log('Server is listening on port 8080');
+// fix the startup sequence to automatically connect to the database
+
+// app.listen(8080);
+// console.log('Server is listening on port 8080');
+
+const port = 8080;
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI);
+    app.listen(port, () =>
+      console.log(`Server is listening on port ${port}...`)
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+start();

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('../partials/head'); %>
+</head>
+
+<body class="container">
+
+  <header>
+    <%- include('../partials/header'); %>
+  </header>
+
+  <main>
+    <p>
+      <%= message %>
+    </p>
+    <!-- prepopulate the form with the values from an existing task -->
+    <!-- When the template is loaded, it is passed a task variable for the task being edited -->
+    <form action=<%= "/tasks/update/" + task.id %> method="post">
+      <label for="name">Name:</label> <br>
+      <!-- The name of the task is set as the initial value in the entry field for name. -->
+      <input name="name" value="<%=task.name %>"><br>
+      <label for="complete">Completed: </label>
+      <% if (task.completed) { %>
+        <!-- checkbox for completed checked if task.completed is true -->
+        <input type="checkbox" name="complete" value="true" checked><br><br>
+        <% } else { %>
+          <input type="checkbox" name="complete" value="false"><br><br>
+          <% } %>
+            <button type="submit">Update</button>
+    </form>
+    </div>
+  </main>
+
+  <footer>
+    <%- include('../partials/footer'); %>
+  </footer>
+
+</body>
+
+</html>
